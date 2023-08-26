@@ -10,7 +10,10 @@ const adminRoute = require('./routes/AdminRoutes')
 const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
-app.use(cors())
+app.use(cors({
+    origin: ['https://teal-semifreddo-4f16b4.netlify.app', 'http://localhost:5173'],
+    credentials: true
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
