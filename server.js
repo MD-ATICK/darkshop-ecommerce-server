@@ -11,8 +11,7 @@ const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
 app.use(cors({
-    origin: ['https://teal-semifreddo-4f16b4.netlify.app', 'http://localhost:5173'],
-    credentials: true
+    origin: '*'
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
