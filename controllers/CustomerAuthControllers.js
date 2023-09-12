@@ -77,7 +77,9 @@ class customer_auth_controllers {
 
         if (!user) return responseReturn(res, 222, { error: 'customer id not found.' })
 
-        await customerModel.findByIdAndUpdate(_id, { password: newpass.trim() })
+        const hashPassword = await bcrypt.hash(newpass, 10)
+
+        await customerModel.findByIdAndUpdate(_id, { password: hashPassword })
         responseReturn(res, 201, { success: 'change passoword successed.✅' })
     }
 
