@@ -46,6 +46,10 @@ const productSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    avgRating: {
+        type: Number,
+        default: 0
+    }
 }, { timestamps: true })
 
 

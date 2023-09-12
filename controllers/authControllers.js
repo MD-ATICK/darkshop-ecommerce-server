@@ -67,7 +67,7 @@ class authControllers {
             const user = await adminModel.findById(_id)
             return responseReturn(res, 200, { user, success: '✅ authorized success.' })
         }
-        console.log('run seller.')
+        console.log('run seller.' , req.user)
         const user = await sellerModel.findById(_id)
         return responseReturn(res, 200, { user, success: '✅ authorized success.' })
         // seller ar kaj

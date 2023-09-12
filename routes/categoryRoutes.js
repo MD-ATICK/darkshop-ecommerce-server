@@ -5,7 +5,7 @@ const { isUserAuthorize } = require('../middlewares/userAuthorize')
 
 
 
-router.get('/get-category', isUserAuthorize, isRoleAccessable('admin', 'seller'), categoryControllers.get_category)
+router.get('/get-category',  categoryControllers.get_category)
 router.post('/add-category', isUserAuthorize, isRoleAccessable('admin', 'seller'), categoryControllers.add_category)
 
 module.exports = router

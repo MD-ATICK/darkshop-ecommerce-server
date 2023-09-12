@@ -4,6 +4,9 @@ const app = express()
 const cors = require('cors')
 const port = process.env.port || 9999
 const authRoute = require('./routes/authRoutes')
+const orderRoute = require('./routes/clientOrderRoutes')
+const customerRoute = require('./routes/CustomerRoutes')
+const clientHomeRoute = require('./routes/clientHomeRoutes')
 const categoryRoute = require('./routes/categoryRoutes')
 const productRoute = require('./routes/productRoutes')
 const adminRoute = require('./routes/AdminRoutes')
@@ -11,7 +14,9 @@ const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
 app.use(cors({
-    origin: ['https://teal-semifreddo-4f16b4.netlify.app', 'http://localhost:5173']
+    // origin: ['https://teal-semifreddo-4f16b4.netlify.app', 'http://localhost:5173'],
+    origin: '*',
+    credentials: true
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -19,6 +24,9 @@ app.use(express.urlencoded({ extended: false }))
 app.get('/', (req, res) => res.status(200).json({ message: 'Happy hacking youth.✅' }))
 
 app.use('/api', authRoute)
+app.use('/api/order', orderRoute)
+app.use('/api/customer', customerRoute)
+app.use('/api/home', clientHomeRoute)
 app.use('/api/v2', categoryRoute)
 app.use('/api/v3', productRoute)
 app.use('/api/v4', adminRoute)
