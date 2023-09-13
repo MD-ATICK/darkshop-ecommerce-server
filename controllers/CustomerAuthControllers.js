@@ -83,6 +83,14 @@ class customer_auth_controllers {
         responseReturn(res, 201, { success: 'change passoword successed.✅' })
     }
 
+    change_avatar = async (req, res) => {
+        const { avatar } = req.body
+        const _id = req.user._id
+
+        await customerModel.findByIdAndUpdate(_id, { avatar })
+        res.status(201).json({ success: 'profile udpated successed' })
+    }
+
 }
 
 module.exports = new customer_auth_controllers()

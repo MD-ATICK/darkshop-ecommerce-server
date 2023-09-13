@@ -21,7 +21,7 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/', (req, res) => res.status(200).json({ message: 'Happy hacking youth.✅' }))
+app.get('/', (req, res) => res.status(200).json({ message: 'Happy hacking youth..✅' }))
 
 app.use('/api', authRoute)
 app.use('/api/order', orderRoute)

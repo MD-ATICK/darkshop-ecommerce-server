@@ -3,6 +3,8 @@ const authorOrderModal = require('../models/authorOrderModel')
 const moment = require('moment')
 const { responseReturn } = require('../utils/responseReturn')
 
+
+// product order kore jodi product ta delivared hoi ba fetch taile adjust product ar stock -1 korte hobe.
 class order_controllers {
 
     fiveteenMin_payment_check = async (orderId) => {
@@ -14,8 +16,6 @@ class order_controllers {
         }
     }
 
-
-    // route controllers
     place_order = async (req, res) => {
         const { products, shops, shippingFee, shippingInfo, productsPrice } = req.body
 
@@ -56,11 +56,12 @@ class order_controllers {
         res.status(201).json({ success: 'order placed.✅', order: created_order })
     }
 
+
     order_paid = async (req, res) => {
         const { orderId } = req.body
         const order = await customerOrderModal.findById(orderId)
         if (order.order_delivery_status === 'cancelled') {
-            res.status(222).json({ error: 'sorry, this order already cancelled by author.' })
+            return res.status(222).json({ error: 'sorry, order cancelled, page reload.' })
         }
         await customerOrderModal.findByIdAndUpdate(orderId, { order_payment_status: 'paid' })
         await authorOrderModal.updateMany({ orderId }, { order_payment_status: 'paid' })
