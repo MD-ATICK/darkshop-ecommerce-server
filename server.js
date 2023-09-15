@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
 
-const allowedOrigins = ['https://stellular-otter-74d475.netlify.app/', 'https://teal-semifreddo-4f16b4.netlify.app/'];
+const allowedOrigins = ['https://stellular-otter-74d475.netlify.app', 'https://teal-semifreddo-4f16b4.netlify.app'];
 
 
 app.use(cors({
@@ -27,7 +27,6 @@ app.use(cors({
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    preflightContinue: false,
     allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
 }));
 
