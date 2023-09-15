@@ -13,11 +13,24 @@ const adminRoute = require('./routes/AdminRoutes')
 const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
+
+const allowedOrigins = ['https://stellular-otter-74d475.netlify.app/', 'https://teal-semifreddo-4f16b4.netlify.app/'];
+
+
 app.use(cors({
-    // origin: ['https://teal-semifreddo-4f16b4.netlify.app', 'http://localhost:5173'],
-    origin: '*',
-    credentials: true
-}))
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    preflightContinue: false,
+    allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+}));
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
