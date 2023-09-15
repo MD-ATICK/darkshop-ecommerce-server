@@ -18,7 +18,7 @@ const { mongooseDb_connect } = require('./database/mongooseDb')
 
 
 app.use(cors({
-    origin: ['https://darkshop-ecommerce-dashboard.vercel.app'],
+    origin: ['https://darkshop-ecommerce-client.vercel.app', 'https://darkshop-ecommerce-dashboard.vercel.app'],
     credentials: true
 }));
 
