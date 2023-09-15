@@ -14,20 +14,12 @@ const cookieParser = require('cookie-parser')
 const { mongooseDb_connect } = require('./database/mongooseDb')
 
 
-const allowedOrigins = ['https://stellular-otter-74d475.netlify.app', 'https://teal-semifreddo-4f16b4.netlify.app'];
+// const allowedOrigins = ['https://stellular-otter-74d475.netlify.app', 'https://teal-semifreddo-4f16b4.netlify.app'];
 
 
 app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+    origin: ['https://darkshop-ecommerce-dashboard.vercel.app'],
+    credentials: true
 }));
 
 app.use(express.json())
