@@ -72,8 +72,8 @@ const server = app.listen(port, () => {
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "*",
-		methods: "*",
+		origin: "https://darkshop-ecommerce-client.vercel.app",
+		methods: ["GET", "POST"],
 		allowedHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	},
