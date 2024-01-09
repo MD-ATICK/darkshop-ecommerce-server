@@ -21,7 +21,6 @@ class order_controllers {
 
         const customerId = req.user._id
         const tempDate = moment(Date.now()).format('LLL')
-        console.log('run place order..')
 
         const created_order = await customerOrderModal.create({
             customerId,
@@ -49,7 +48,6 @@ class order_controllers {
         })
 
         setTimeout(() => {
-            console.log('payment check.⌛')
             this.fiveteenMin_payment_check(created_order._id)
         }, 60000);
 

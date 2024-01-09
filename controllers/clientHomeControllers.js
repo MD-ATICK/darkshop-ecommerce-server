@@ -34,9 +34,8 @@ class clientHomeControllers {
     get_categoryes = async (req, res) => {
 
         const accesstext = req.headers.authorization
-        console.log({ accesstext })
         if (!accesstext) return responseReturn(res, 222, { message: 'server is not accesable for you.' })
-        
+
 
         const categoryes = await categoryModel.find({})
 
@@ -48,7 +47,7 @@ class clientHomeControllers {
         // const accesstext = req.headers.authorization
         // if (!accesstext) return responseReturn(res, 222, { message: 'server is not accesable for you.' })
 
-        const products = await productModel.find({})
+        const allproducts = await productModel.find({})
         const future_products = await productModel.find({}).limit(16).sort({ createdAt: -1 })
 
         const temp_latest_products = await productModel.find({}).limit(12).sort({ createdAt: -1 })
@@ -63,7 +62,7 @@ class clientHomeControllers {
 
         responseReturn(res, 200, {
             success: 'all products get successed.✅',
-            products,
+            allproducts,
             future_products,
             format_latest_products,
             format_topRated_products,

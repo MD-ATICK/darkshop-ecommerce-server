@@ -1,5 +1,4 @@
-
-
 module.exports.responseReturn = (res, status, data) => {
-    return res.status(status).json(data)
-}
+	res.status(status).json(data);
+	return;
+};

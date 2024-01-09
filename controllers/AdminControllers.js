@@ -32,7 +32,6 @@ class admin_Controller {
     change_status = async (req, res) => {
 
         const { sellerid, sellerstatus } = req.body
-        console.log(req.body)
 
         const updatedUser = await sellerModel.findByIdAndUpdate(sellerid, { status :  sellerstatus }, { new: true })
 
@@ -41,7 +40,6 @@ class admin_Controller {
 
     single_seller = async (req, res) => {
         const { _id } = req.params
-        console.log('id vai')
 
         const findseller = await sellerModel.findById(_id)
 

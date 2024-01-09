@@ -48,7 +48,9 @@ const registerSellerSchema = new mongoose.Schema({
     },
     shopInfo: {
         type: Object,
-        default: {}
+        default: {
+            // shopName , district , division , subdistrict.
+        }
     }
 }, { timestamps: true })
 
