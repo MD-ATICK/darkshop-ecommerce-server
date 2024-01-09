@@ -22,15 +22,16 @@ const MessageRoute = require("./routes/MessageRoutes");
 //     credentials: true
 // }));
 
-app.use(
-	cors({
-		origin: [
-			"https://darkshop-ecommerce-client.vercel.app",
-			"https://darkshop-ecommerce-dashboard.vercel.app",
-		],
-	}),
-);
+// app.use(
+// 	cors({
+// 		origin: [
+// 			"https://darkshop-ecommerce-client.vercel.app",
+// 			"https://darkshop-ecommerce-dashboard.vercel.app",
+// 		],
+// 	}),
+// );
 app.use(express.json());
+app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) =>
