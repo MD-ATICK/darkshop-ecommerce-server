@@ -33,6 +33,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/", (req, res) =>
+	res.status(200).json({ message: "Happy Vercel? with ROOT route?!✅" }),
+);
 app.get("/api", (req, res) =>
 	res.status(200).json({ message: "Happy hacking youth ?!✅" }),
 );
