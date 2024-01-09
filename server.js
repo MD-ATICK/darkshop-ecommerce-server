@@ -25,8 +25,8 @@ const MessageRoute = require("./routes/MessageRoutes");
 app.use(
 	cors({
 		origin: [
-			"https://darkshop-ecommerce-client.vercel.app/",
-			"https://darkshop-ecommerce-dashboard.vercel.app/",
+			"https://darkshop-ecommerce-client.vercel.app",
+			"https://darkshop-ecommerce-dashboard.vercel.app",
 		],
 	}),
 );
@@ -61,8 +61,8 @@ const server = app.listen(port, () => {
 
 const io = require("socket.io")(server, {
 	cors: [
-		"https://darkshop-ecommerce-client.vercel.app/",
-		"https://darkshop-ecommerce-dashboard.vercel.app/",
+		"https://darkshop-ecommerce-client.vercel.app",
+		"https://darkshop-ecommerce-dashboard.vercel.app",
 	],
 });
 // const io = require("socket.io")(server, {
