@@ -30,12 +30,22 @@ const MessageRoute = require("./routes/MessageRoutes");
 // 		],
 // 	}),
 // );
+
+const options = [
+	cors({
+		origin: "*",
+		methods: "*",
+		allowedHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+];
+
+app.use(options);
 app.use(express.json());
-app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) =>
-	res.status(200).json({ message: "Happy Vercel? with ROOT route?!✅" }),
+	res.status(200).json({ message: "1.Happy Vercel? with ROOT route?!✅" }),
 );
 app.get("/api", (req, res) =>
 	res.status(200).json({ message: "Happy hacking youth ?!✅" }),
