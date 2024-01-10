@@ -74,7 +74,10 @@ if (process.env.NODE_ENV === "production") {
 
 	const io = require("socket.io")(server, {
 		cors: {
-			origin: "https://darkshop-ecommerce-client.vercel.app",
+			origin: [
+				"https://darkshop-ecommerce-client.vercel.app",
+				"https://darkshop-ecommerce-dashboard.vercel.app",
+			],
 			methods: ["GET", "POST"],
 			allowedHeaders: ["Content-Type", "Authorization"],
 			credentials: true,
