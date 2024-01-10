@@ -31,116 +31,119 @@ const MessageRoute = require("./routes/MessageRoutes");
 // 	}),
 // );
 
-const options = [
-	cors({
-		origin: "*",
-		methods: "*",
-		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	}),
-];
+if (process.env.NODE_ENV === "production") {
+	mongooseDb_connect();
+	console.log("nodeenv", process.env.NODE_ENV);
 
-app.use(options);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+	const options = [
+		cors({
+			origin: "*",
+			methods: "*",
+			allowedHeaders: ["Content-Type", "Authorization"],
+			credentials: true,
+		}),
+	];
 
-app.get("/", (req, res) =>
-	res.status(200).json({ message: "1.Happy Vercel? with ROOT route?!✅" }),
-);
-app.get("/api", (req, res) =>
-	res.status(200).json({ message: "Happy hacking youth ?!✅" }),
-);
+	app.use(options);
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/v1", authRoute);
-app.use("/api/v2", categoryRoute);
-app.use("/api/v3", productRoute);
-app.use("/api/v4", adminRoute);
-app.use("/api/v5", reviewRoute);
+	app.get("/", (req, res) =>
+		res.status(200).json({ message: "1.Happy Vercel? with ROOT route?!✅" }),
+	);
+	app.get("/api", (req, res) =>
+		res.status(200).json({ message: "Happy hacking youth ?!✅" }),
+	);
 
-app.use("/api/v6", chatRoute);
-app.use("/api/v7", MessageRoute);
+	app.use("/api/v1", authRoute);
+	app.use("/api/v2", categoryRoute);
+	app.use("/api/v3", productRoute);
+	app.use("/api/v4", adminRoute);
+	app.use("/api/v5", reviewRoute);
 
-app.use("/api/v8", orderRoute);
-app.use("/api/v9", customerRoute);
-app.use("/api/v10", clientHomeRoute);
+	app.use("/api/v6", chatRoute);
+	app.use("/api/v7", MessageRoute);
 
-mongooseDb_connect();
+	app.use("/api/v8", orderRoute);
+	app.use("/api/v9", customerRoute);
+	app.use("/api/v10", clientHomeRoute);
 
-const server = app.listen(port, () => {
-	console.log(`✅ Server is running at : http://localhost:${port}`);
-});
-
-const io = require("socket.io")(server, {
-	cors: {
-		origin: "https://darkshop-ecommerce-client.vercel.app",
-		methods: ["GET", "POST"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	},
-});
-// const io = require("socket.io")(server, {
-// 	cors: [
-// 		"http://localhost:5173",
-// 		"http://localhost:5174",
-// 		"http://localhost:5175",
-// 	],
-// });
-
-let onlineUsers = [];
-let chatId;
-
-io.on("connection", socket => {
-	socket.on("add_user", user => {
-		console.log(`user connected is ~ ${socket.id}`);
-		onlineUsers = [...onlineUsers, { ...user, socketid: socket.id }];
-		io.emit("onlineUsers", onlineUsers);
+	const server = app.listen(port, () => {
+		console.log(`✅ Server is running at : http://localhost:${port}`);
 	});
 
-	socket.on("join", chatid => {
-		console.log(`✅ user join room ~ ${chatid}`);
-		chatId = chatid;
-		socket.join(chatid);
+	const io = require("socket.io")(server, {
+		cors: {
+			origin: "https://darkshop-ecommerce-client.vercel.app",
+			methods: ["GET", "POST"],
+			allowedHeaders: ["Content-Type", "Authorization"],
+			credentials: true,
+		},
 	});
+	// const io = require("socket.io")(server, {
+	// 	cors: [
+	// 		"http://localhost:5173",
+	// 		"http://localhost:5174",
+	// 		"http://localhost:5175",
+	// 	],
+	// });
 
-	socket.on("leave", chatid => {
-		console.log(`⛔ user leave room ~ ${chatid}`);
-		socket.leave(chatid);
-	});
+	let onlineUsers = [];
+	let chatId;
 
-	socket.on("message_send", props => {
-		const { _id, sender, chat, content, images, createdAt } = props;
+	io.on("connection", socket => {
+		socket.on("add_user", user => {
+			console.log(`user connected is ~ ${socket.id}`);
+			onlineUsers = [...onlineUsers, { ...user, socketid: socket.id }];
+			io.emit("onlineUsers", onlineUsers);
+		});
 
-		const nanAryRoomUsers = io.sockets.adapter.rooms.get(chat._id);
-		const roomUsers = Array.from(nanAryRoomUsers);
-		const chatUsersAry = [chat.seller, chat.customer];
-		console.log({ roomUsers: roomUsers.length, msg: "now making msg" });
+		socket.on("join", chatid => {
+			console.log(`✅ user join room ~ ${chatid}`);
+			chatId = chatid;
+			socket.join(chatid);
+		});
 
-		if (roomUsers.length === 1) {
-			console.log({ roomUsers: roomUsers.length, msg: "now send solo msg" });
-			const f2 = chatUsersAry.find(u => u._id !== sender._id);
-			const find = onlineUsers.find(ou => ou._id === f2._id);
-			if (find) {
-				return io.to(find.socketid).emit("unseen_recive_message", props);
+		socket.on("leave", chatid => {
+			console.log(`⛔ user leave room ~ ${chatid}`);
+			socket.leave(chatid);
+		});
+
+		socket.on("message_send", props => {
+			const { _id, sender, chat, content, images, createdAt } = props;
+
+			const nanAryRoomUsers = io.sockets.adapter.rooms.get(chat._id);
+			const roomUsers = Array.from(nanAryRoomUsers);
+			const chatUsersAry = [chat.seller, chat.customer];
+			console.log({ roomUsers: roomUsers.length, msg: "now making msg" });
+
+			if (roomUsers.length === 1) {
+				console.log({ roomUsers: roomUsers.length, msg: "now send solo msg" });
+				const f2 = chatUsersAry.find(u => u._id !== sender._id);
+				const find = onlineUsers.find(ou => ou._id === f2._id);
+				if (find) {
+					return io.to(find.socketid).emit("unseen_recive_message", props);
+				}
+			} else {
+				console.log({
+					roomUsers: roomUsers.length,
+					msg: "now send successed duo msg",
+				});
+				socket.broadcast.to(chat._id).emit("reciveMessage", props);
 			}
-		} else {
-			console.log({
-				roomUsers: roomUsers.length,
-				msg: "now send successed duo msg",
-			});
-			socket.broadcast.to(chat._id).emit("reciveMessage", props);
-		}
-	});
+		});
 
-	socket.on("logout", () => {
-		onlineUsers = onlineUsers.filter(ou => ou.socketid !== socket.id);
-		io.emit("onlineUsers", onlineUsers);
-	});
+		socket.on("logout", () => {
+			onlineUsers = onlineUsers.filter(ou => ou.socketid !== socket.id);
+			io.emit("onlineUsers", onlineUsers);
+		});
 
-	socket.on("disconnect", () => {
-		console.log(`user disconected is ~ ${socket.id}`);
-		socket.leave(chatId);
-		console.log(`⛔ chat leave room is ~ ${chatId}`);
-		onlineUsers = onlineUsers.filter(ou => ou.socketid !== socket.id);
-		io.emit("onlineUsers", onlineUsers);
+		socket.on("disconnect", () => {
+			console.log(`user disconected is ~ ${socket.id}`);
+			socket.leave(chatId);
+			console.log(`⛔ chat leave room is ~ ${chatId}`);
+			onlineUsers = onlineUsers.filter(ou => ou.socketid !== socket.id);
+			io.emit("onlineUsers", onlineUsers);
+		});
 	});
-});
+}
